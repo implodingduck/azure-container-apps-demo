@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    user: root
+    hostname: mssql
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD
+    volumes:
+      - "./mssql:/var/opt/mssql"
+    networks:
+      - academo
+
+  cfdemo:
+    build: .
+    image: cfdemo
+    container_name: cfdemo
+    ports:
+      - "8500:8500"
+    environment:
+      - acceptEULA=YES
+    depends_on:
+      - mssql
+    networks:
+      - academo
+
+networks:
+  academo:

@@ -21,11 +21,6 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 
-
-defaults:
-  run:
-    working-directory: docker
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -86,6 +81,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          context: ./docker/
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
